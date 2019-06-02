@@ -4,7 +4,7 @@ import java.util.Iterator;
 /**
  * Implement BoundedQueue<T>
  */
-public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> implements BoundedQueue<T>{
+public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     /** Index for the next dequeue or peek. */
     private int first;
     /** Index for the next enqueue. */
@@ -99,10 +99,11 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> implements Bound
 
     private class ArrayRingBufferIterator implements Iterator<T> {
         private int wizPos;
-        //ArrayRingBuffer<T> newItem = this;
+        private int location;
 
         public ArrayRingBufferIterator() {
             wizPos = 0;
+            location = first;
         }
 
         public boolean hasNext() {
@@ -110,40 +111,17 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> implements Bound
         }
 
         /**
-         * Make sure you dequeue and then enqueue.
+         * Do not use dequeue and enqueue.
          * Otherwise, nested iteration will be wrong.
          */
         public T next() {
-            T returnItem = dequeue();
-            enqueue(returnItem);
+            T returnItem = rb[location];
+            location += 1;
+            if (location == capacity()) {
+                location = 0;
+            }
             wizPos += 1;
             return returnItem;
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null) {
-            return false;
-        }
-        if (o.getClass() != this.getClass()) {
-            return false;
-        }
-        ArrayRingBuffer<T> other = (ArrayRingBuffer<T>) o;
-        if (other.capacity() != this.capacity()) {
-            return false;
-        }
-        if (other.fillCount() != this.fillCount()) {
-            return false;
-        }
-        for (T item : this) {
-            if (other.dequeue() != item) {
-                return false;
-            }
-        }
-        return true;
     }
 }

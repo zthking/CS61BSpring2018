@@ -16,7 +16,7 @@ public class GuitarString {
         if (frequency <= 0) {
             throw new IllegalArgumentException();
         }
-        buffer = new ArrayRingBuffer<>((int) Math.round(SR/frequency));
+        buffer = new ArrayRingBuffer<>((int) Math.round(SR / frequency));
         for (int i = 0; i < buffer.capacity(); i++) {
             buffer.enqueue(0d);
         }
@@ -48,9 +48,6 @@ public class GuitarString {
      * the Karplus-Strong algorithm.
      */
     public void tic() {
-        // TODO: Dequeue the front sample and enqueue a new sample that is
-        //       the average of the two multiplied by the DECAY factor.
-        //       Do not call StdAudio.play().
         double dequeuedItem = buffer.dequeue();
         double newFirstItem = this.sample();
         buffer.enqueue(DECAY * 0.5 * (dequeuedItem + newFirstItem));
