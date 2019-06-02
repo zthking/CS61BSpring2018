@@ -7,7 +7,7 @@ import java.util.Iterator;
  * and can only be dequeued from the front of the queue.
  * It has a fixed capacity, and nothing is allowed to enqueue if the queue is full.
  */
-public abstract class AbstractBoundedQueue<T>{
+public abstract class AbstractBoundedQueue<T> extends BoundedQueue{
 
     protected int fillCount;
     protected int capacity;
