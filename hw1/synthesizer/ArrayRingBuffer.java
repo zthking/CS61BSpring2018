@@ -4,7 +4,7 @@ import java.util.Iterator;
 /**
  * Implement BoundedQueue<T>
  */
-public class ArrayRingBuffer<T> extends AbstractBoundedQueue implements BoundedQueue<T>{
+public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> implements BoundedQueue<T>{
     /** Index for the next dequeue or peek. */
     private int first;
     /** Index for the next enqueue. */
