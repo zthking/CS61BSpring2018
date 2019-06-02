@@ -11,12 +11,19 @@ public abstract class AbstractBoundedQueue<T>{
 
     protected int fillCount;
     protected int capacity;
-    public int capacity()
-    public int fillCount()
-    public boolean isEmpty()
-    public boolean isFull()
+    public int capacity() {
+        return capacity;
+    };
+    public int fillCount() {
+        return fillCount;
+    };
+    public boolean isEmpty() {
+        return (this.fillCount() == 0);
+    }
+    public boolean isFull() {
+        return (this.capacity() == this.fillCount());
+    };
     public abstract T peek();
     public abstract T dequeue();
     public abstract void enqueue(T x);
-
 }
