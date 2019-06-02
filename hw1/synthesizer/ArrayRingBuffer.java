@@ -4,7 +4,7 @@ import java.util.Iterator;
 /**
  * Implement BoundedQueue<T>
  */
-public class ArrayRingBuffer<T> implements BoundedQueue<T>{
+public class ArrayRingBuffer<T> extends AbstractBoundedQueue implements BoundedQueue<T>{
     /** Index for the next dequeue or peek. */
     private int first;
     /** Index for the next enqueue. */
@@ -92,9 +92,6 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T>{
         System.out.println(r);
     }
 
-    // TODO: When you get to part 4, implement the needed code to support
-    //       iteration and equals.
-
     @Override
     public Iterator<T> iterator() {
         return new ArrayRingBufferIterator();
@@ -102,6 +99,7 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T>{
 
     private class ArrayRingBufferIterator implements Iterator<T> {
         private int wizPos;
+        //ArrayRingBuffer<T> newItem = this;
 
         public ArrayRingBufferIterator() {
             wizPos = 0;
@@ -111,8 +109,13 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T>{
             return wizPos < fillCount;
         }
 
+        /**
+         * Make sure you dequeue and then enqueue.
+         * Otherwise, nested iteration will be wrong.
+         */
         public T next() {
             T returnItem = dequeue();
+            enqueue(returnItem);
             wizPos += 1;
             return returnItem;
         }
