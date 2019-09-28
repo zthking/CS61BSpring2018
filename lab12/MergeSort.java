@@ -31,11 +31,24 @@ public class MergeSort {
         }
     }
 
-    /** Returns a queue of queues that each contain one item from items. */
+    /**
+     * Returns a queue of queues that each contain one item from items.
+     *
+     * This method should take linear time.
+     *
+     * @param   items  A Queue of items.
+     * @return         A Queue of queues, each containing an item from items.
+     *
+     */
     private static <Item extends Comparable> Queue<Queue<Item>>
-            makeSingleItemQueues(Queue<Item> items) {
-        // Your code here!
-        return null;
+    makeSingleItemQueues(Queue<Item> items) {
+        Queue<Queue<Item>> returnQueue = new Queue<>();
+        for(Item i : items) {
+            Queue<Item> q = new Queue<>();
+            q.enqueue(i);
+            returnQueue.enqueue(q);
+        }
+        return returnQueue;
     }
 
     /**
@@ -53,14 +66,46 @@ public class MergeSort {
      */
     private static <Item extends Comparable> Queue<Item> mergeSortedQueues(
             Queue<Item> q1, Queue<Item> q2) {
-        // Your code here!
-        return null;
+        Queue<Item> q = new Queue<>();
+        while (!q1.isEmpty() || !q2.isEmpty()) {
+            q.enqueue(getMin(q1, q2));
+        }
+        if (q1.isEmpty()) {
+            while (!q2.isEmpty()) {
+                q.enqueue(q2.dequeue());
+            }
+        } else {
+            while (!q1.isEmpty()) {
+                q.enqueue(q1.dequeue());
+            }
+        }
+        return q;
     }
 
-    /** Returns a Queue that contains the given items sorted from least to greatest. */
+    /**
+     * Returns a Queue that contains the given items sorted from least to greatest.
+     *
+     * This method should take roughly nlogn time where n is the size of "items"
+     * this method should be non-destructive and not empty "items".
+     *
+     * @param   items  A Queue to be sorted.
+     * @return         A Queue containing every item in "items".
+     *
+     */
     public static <Item extends Comparable> Queue<Item> mergeSort(
             Queue<Item> items) {
-        // Your code here!
-        return items;
+        int N = items.size();
+        if (N <= 1) {
+            return items;
+        }
+        Queue<Item> a = new Queue<>();
+        Queue<Item> b = new Queue<>();
+        for (int i = 0; i < N / 2; i++) {
+            a.enqueue(items.dequeue());
+        }
+        for (int i = 0; i < N - N / 2; i++) {
+            b.enqueue((items.dequeue()));
+        }
+        return mergeSortedQueues(mergeSort(a), mergeSort(b));
     }
 }
