@@ -94,6 +94,7 @@ public class MergeSort {
      */
     public static <Item extends Comparable> Queue<Item> mergeSort(
             Queue<Item> items) {
+        Queue<Queue<Item>> q = makeSingleItemQueues(items);
         int N = items.size();
         if (N <= 1) {
             return items;
@@ -101,10 +102,10 @@ public class MergeSort {
         Queue<Item> a = new Queue<>();
         Queue<Item> b = new Queue<>();
         for (int i = 0; i < N / 2; i++) {
-            a.enqueue(items.dequeue());
+            a.enqueue(q.dequeue().dequeue());
         }
         for (int i = 0; i < N - N / 2; i++) {
-            b.enqueue((items.dequeue()));
+            b.enqueue(q.dequeue().dequeue());
         }
         return mergeSortedQueues(mergeSort(a), mergeSort(b));
     }
